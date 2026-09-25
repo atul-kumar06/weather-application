@@ -32,9 +32,7 @@ async function weatherInfo({
   userEnteredPlace = "New Delhi",
 } = {}) {
   try {
-    let unitSelected = unitSystem === "imperial" ? "imperial" : "metric";
-    let placeName = userEnteredPlace;
-    const latlogFetch = await getGeoCoordinates(placeName);
+    const latlogFetch = await getGeoCoordinates(userEnteredPlace);
 
     const params = new URLSearchParams({
       latitude: latlogFetch.latitude,
@@ -43,16 +41,18 @@ async function weatherInfo({
       hourly: "temperature_2m,weather_code",
       current:
         "temperature_2m,relative_humidity_2m,precipitation,weather_code,apparent_temperature,wind_speed_10m",
-      temperature_unit: unitSelected ? "celsius" : "fahrenheit",
-      wind_speed_unit: unitSelected ? "kmh" : "mph",
-      precipitation_unit: unitSelected ? "mm" : "inch",
+      temperature_unit: unitSystem === "imperial" ? "fahrenheit" : "celsius",
+      wind_speed_unit: unitSystem === "imperial" ? "mph" : "kmh",
+      precipitation_unit: unitSystem === "imperial" ? "inch" : "mm",
       timezone: "auto",
     });
 
     const weatherInfoFetch = await fetch(
       `https://api.open-meteo.com/v1/forecast?${params.toString()}`,
     );
+
     const weatherData = await weatherInfoFetch.json();
+
     // Set Main Display
     countryName.textContent = latlogFetch.country;
     cityName.textContent = latlogFetch.name;
