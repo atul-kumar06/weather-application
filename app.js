@@ -8,6 +8,7 @@ const dropdown = document.querySelector(".unit-dropdown");
 const systemToggleBtn = document.querySelector(".unit-dropdown__system-btn");
 const unitgroups = document.querySelectorAll(".unit-group");
 const searchBtn = document.querySelector(".search-btn");
+const searchInput = document.querySelector(".search-bar");
 const countryName = document.querySelector(".country_name");
 const cityName = document.querySelector(".country_state");
 const mainDisplaytemp = document.querySelector(".dashboard-temp");
@@ -23,49 +24,17 @@ const hourlyContainer = document.querySelector("#hourly-container");
 const perceptionUnit = document.querySelector(".precipitation-unit");
 const windUnit = document.querySelector(".wind-unit");
 const humadityUnit = document.querySelector(".humadity-unit");
-const searchInput = document.querySelector(".search-bar");
-const weatherDashboard = document.querySelector(".main-weather-dashboard");
-
-// function renderErrorUI(message) {
-//   // if (weatherDashboard) weatherDashboard.remove();
-//   weatherDashboard.classList.add("main-weather-dashboard");
-//   weatherDashboard.innerHTML = `
-//     <div class="error-container">
-//       <img src="./assets/images/icon-error.svg" alt="Error" />
-//       <h1>Something went wrong</h1>
-//       <p>${message}</p>
-//       <button class="retry-btn">
-//         <img class="retry-icon" src="./assets/images/icon-retry.svg" alt="" />
-//         <span>Retry</span>
-//       </button>
-//     </div>
-//   `;
-
-//   // Attach event listener AFTER the element is injected into the DOM
-//   document.querySelector(".retry-btn")?.addEventListener("click", handleSearch);
-// }
-
-// async function handleSearch() {
-//   try {
-//     const coords = await getGeoCoordinates(searchInput.value);
-//     console.log("Found coordinates:", coords);
-//     // Proceed to load weather data...
-//   } catch (error) {
-//     console.error("Search failed:", error.message);
-//     renderErrorUI(error.message);
-//   }
-// }
-
-// handleSearch();
+const weatherDashboard = document.querySelector("main");
 
 // Fetch weatherInfo from API
-async function weatherInfo(unitSystem) {
-  let unitSelected = unitSystem === "imperial" ? "imperial" : "metric";
-  console.log("🚀 ~ weatherInfo ~ unitSelected:", unitSelected);
-
+async function weatherInfo({
+  unitSystem = "metric",
+  userEnteredPlace = "New Delhi",
+} = {}) {
   try {
-    const latlogFetch = await getGeoCoordinates();
-    console.log("🚀 ~ weatherInfo ~ latlogFetch:", latlogFetch);
+    let unitSelected = unitSystem === "imperial" ? "imperial" : "metric";
+    let placeName = userEnteredPlace;
+    const latlogFetch = await getGeoCoordinates(placeName);
 
     const params = new URLSearchParams({
       latitude: latlogFetch.latitude,
@@ -188,7 +157,7 @@ async function weatherInfo(unitSystem) {
       <div>
         <span class="hourly-temp">${value.temp}</span>
       </div>
-    </div>
+      </div>
   </div>
 `,
         )
@@ -196,11 +165,10 @@ async function weatherInfo(unitSystem) {
       hourlyContainer.innerHTML = htmlString;
     });
   } catch (error) {
-    console.log("Error in weather", error);
+    renderErrorUI(error.message);
+    console.log("Error inside the weatherInfo fucnction\n", error.stack);
   }
 }
-
-weatherInfo("imperial"); // Initial call to fetch weather data for default location
 
 const currentUnits = {
   temperature: "celsius",
@@ -264,6 +232,36 @@ systemToggleBtn.addEventListener("click", () => {
   systemToggleBtn.textContent = isImperialTarget
     ? "Switch to Metric"
     : "Switch to Imperial";
+  weatherInfo({ unitSystem: targetSystem });
 });
 
-// weatherInfo(); // Initial call to fetch weather data for default location
+searchBtn.addEventListener("click", (e) => {
+  weatherInfo({ userEnteredPlace: searchInput.value });
+});
+
+function renderErrorUI(message) {
+  if (weatherDashboard) weatherDashboard.innerHTML = "";
+
+  weatherDashboard.classList.add("main-weather-dashboard");
+  weatherDashboard.innerHTML = `
+    <div class="error-container">
+      <img src="./assets/images/icon-error.svg" alt="Error" />
+      <h1>Something went wrong</h1>
+      <p>We couldn't connect to the server ${message}. Please try again in few moments</p>
+      <button class="retry-btn">
+        <img class="retry-icon" src="./assets/images/icon-retry.svg" alt="" />
+        <span>Retry</span>
+      </button>
+    </div>
+  `;
+
+  const btn = document.querySelector(".retry-btn");
+  if (btn !== null && btn !== undefined) {
+    btn.addEventListener("click", () => {
+      weatherInfo();
+      location.reload();
+    });
+  }
+}
+
+weatherInfo(); // Initial call to fetch weather data for default location

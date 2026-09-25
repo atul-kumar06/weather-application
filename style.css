@@ -497,8 +497,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  width: 100%;
+}
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 /* 4. Definition for the 360-degree rotation animation */
@@ -580,5 +585,9 @@ body {
 
   .metric-grid {
     grid-template-columns: repeat(2, 1fr); /* Clean 2x2 grid */
+  }
+  .error-container {
+    gap: 1rem;
+    margin-top: 1rem;
   }
 }
