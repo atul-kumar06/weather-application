@@ -1,116 +1,173 @@
-# Frontend Mentor - Weather app
+# Frontend Mentor - Weather App Solution
 
-![Design preview for the Weather app coding challenge](./preview.jpg)
+This is a solution to the [Weather app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/weather-app-K1FhddVm49). Frontend Mentor challenges help you sharpen your front-end coding skills by building realistic, accessible projects.
 
-## Welcome! 👋
+## Table of Contents
 
-Thanks for checking out this coding challenge.
+- [Overview](#overview)
+  - [The Challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+- [My Process](#my-process)
+  - [Built With](#built-with)
+  - [What I Learned](#what-i-learned)
+  - [Continued Development](#continued-development)
+  - [Useful Resources](#useful-resources)
+- [Author](#author)
+- [Acknowledgments](#acknowledgments)
 
-[Frontend Mentor](https://www.frontendmentor.io) challenges help you improve your coding skills by building realistic projects.
+---
 
-**To do this challenge, you need a good understanding of HTML, CSS, and JavaScript.**
+## Overview
 
-## The challenge
+### The Challenge
 
-Build a weather app using the [Open-Meteo API](https://open-meteo.com/) and get it looking as close to the design as possible.
+Users should be able to:
 
-You can use any tools you like to help you complete the challenge. So if you've got something you'd like to practice, feel free to give it a go.
+- Search for current weather and future forecasts by entering a location name.
+- View real-time weather metrics including temperature, descriptive conditions, dynamic icons, humidity, and wind speed.
+- View forecast data organized across structured daily or hourly displays.
+- Enjoy an intuitive, responsive interface optimized for mobile, tablet, and desktop viewports.
+- Receive informative, non-intrusive feedback when inputting invalid locations or encountering network/server errors.
+- See clear hover, focus, and active states across all interactive controls.
 
-Your users should be able to:
+### Screenshot
 
-- Search for weather information by entering a location in the search bar
-- View current weather conditions including temperature, weather icon, and location details
-- See additional weather metrics like "feels like" temperature, humidity percentage, wind speed, and precipitation amounts
-- Browse a 7-day weather forecast with daily high/low temperatures and weather icons
-- View an hourly forecast showing temperature changes throughout the day
-- Switch between different days of the week using the day selector in the hourly forecast section
-- Toggle between Imperial and Metric measurement units via the units dropdown
-- View the optimal layout for the interface depending on their device's screen size
-- See hover and focus states for all interactive elements on the page
+![Weather App Desktop Preview](./preview.jpg)
 
-## Getting started
+### Links
 
-### What's included
+- **Live Demo (Vercel):** https://weather-application-henna-rho.vercel.app/
 
-Your task is to build out the project to the designs inside the `/design` folder. You will find both a mobile and a desktop version of the design.
+- **GitHub Repository:** https://github.com/atul-kumar06/weather-application
 
-**In your download:**
-- Mobile and desktop designs (JPG format)
-- All required assets in the `/assets` folder
-- Variable and static font files (or link to Google Fonts)
-- `style-guide.md` with colors, fonts, and other design specs
+---
 
-**Want more accurate builds?** The designs are in JPG static format, which means you'll need to use your best judgment for styles such as `font-size`, `padding`, and `margin`. If you'd like the Figma design file to help build a more accurate solution faster, you can [subscribe as a PRO member](https://www.frontendmentor.io/pro).
+## My Process
 
-### API setup
+### Built With
 
-This project uses the [Open-Meteo API](https://open-meteo.com/) to fetch weather data.
+- **Semantic HTML5 markup** - For accessible document flow and screen-reader friendliness.
+- **CSS3 Variables** - For clean theme management, standardized spacing scales, and color schemes.
+- **CSS Flexbox** - Handled single-dimensional layouts, card headers, and responsive search bars.
+- **CSS Grid** - Built multi-column metrics and responsive forecast card grids.
+- **Vanilla JavaScript (ES6+)** - Managed state, network requests, and real-time DOM updates.
+- **Fetch API & Asynchronous JavaScript** - Handled remote calls using `async` / `await`.
+- **Weather API** - Integrated real-time forecasting data (e.g., Open-Meteo or OpenWeatherMap).
+- **Mobile-first approach** - Structured styling from smaller screens upward to ensure consistent responsiveness.
 
-**Good news:** Open-Meteo is completely free and doesn't require an API key! You can start making requests right away.
+---
 
-- **API Documentation:** [https://open-meteo.com/en/docs](https://open-meteo.com/en/docs)
-- **No rate limits** for reasonable personal use
-- Example endpoint: `https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true`
+### What I Learned
 
-Check their documentation for all available weather parameters and location search capabilities.
+This project provided deep, practical experience in orchestrating responsive styling with asynchronous JavaScript patterns.
 
-## Using AI coding assistants
+#### 1. Modern Layouts with Flexbox & CSS Grid
 
-We've included two files to help you if you're using AI coding assistants (like Claude, GitHub Copilot, Cursor, etc.) while working on this challenge:
+Combining Flexbox and Grid allowed me to avoid brittle layout hacks and excessive media queries. I utilized CSS Grid's `repeat(auto-fit, minmax(...))` pattern to make the forecast cards adapt dynamically to available screen real estate:
 
-- `AGENTS.md` - Contains detailed instructions for AI assistants on how to help you with this challenge. It's tailored to this challenge's difficulty level, so the AI will provide guidance appropriate to your learning stage—offering more support for beginner challenges and encouraging more independence on advanced ones.
-- `CLAUDE.md` - A pointer file that directs Claude-based tools to the AGENTS.md instructions.
+```css
+/* Responsive forecast cards using auto-fit and minmax */
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1.25rem;
+}
 
-**How to use them:** You don't need to do anything! These files are automatically detected by most AI coding tools. The AI will read them and adjust its behavior to be a better learning partner—guiding you toward solutions rather than just giving you the answers.
+/* Flexbox for clean vertical centering and spacing inside widgets */
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+```
 
-**Note:** These files are designed to help you *learn*, not to do the work for you. The AI is instructed to ask questions, give hints, and explain concepts rather than writing complete solutions.
+#### 2. Clean Asynchronous Flows with `async/await`
 
-## Building your project
+Rather than relying on deeply nested `.then()` and `.catch()` chains, I structured my data fetching with `async` and `await`, creating clear, readable procedural execution:
 
-Feel free to use any workflow that you feel comfortable with. Below is a suggested process, but do not feel like you need to follow these steps:
+```javascript
+async function getWeatherData(latitude, longitude) {
+  const endpoint = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=auto`;
 
-1. Initialize your project as a public repository on [GitHub](https://github.com/). Creating a repo will make it easier to share your code with the community if you need help. If you're not sure how to do this, [have a read-through of this Try Git resource](https://try.github.io/).
-2. Configure your repository to publish your code to a web address. This will also be useful if you need some help during a challenge as you can share the URL for your project with your repo URL. There are a number of ways to do this, and we provide some recommendations below.
-3. Look through the designs to start planning out how you'll tackle the project. This step is crucial to help you think ahead for CSS classes to create reusable styles.
-4. Before adding any styles, structure your content with HTML. Writing your HTML first can help focus your attention on creating well-structured content.
-5. Write out the base styles for your project, including general content styles, such as `font-family` and `font-size`.
-6. Start adding styles to the top of the page and work down. Only move on to the next section once you're happy you've completed the area you're working on.
+  const response = await fetch(endpoint);
+  if (!response.ok) {
+    throw new Error(`Data fetch failed with status: ${response.status}`);
+  }
 
-### Want some support on the challenge?
+  return await response.json();
+}
+```
 
-[Join our community](https://www.frontendmentor.io/community) and ask questions in the **#help** channel.
+#### 3. Defensive Programming & Error Handling
 
-## Deploying your project
+Network requests can fail for multiple reasons (invalid user inputs, lack of an internet connection, or external API timeouts). I used structured `try...catch...finally` blocks to give users immediate visual cues instead of silent console crashes:
 
-As mentioned above, there are many ways to host your project for free. Our recommended hosts are:
+```javascript
+export async function getGeoCoordinates(location) {
+  const query = location;
+  try {
+    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=10&language=en&format=json`;
 
-- [GitHub Pages](https://pages.github.com/)
-- [Vercel](https://vercel.com/)
-- [Netlify](https://www.netlify.com/)
+    const response = await fetch(url);
 
-You can host your site using one of these solutions or any of our other trusted providers. [Read more about our recommended and trusted hosts](https://www.frontendmentor.io/guides/hosting-your-solution).
+    // Catch HTTP-level issues (4xx, 5xx)
+    if (!response.ok) {
+      throw new Error(
+        `Server returned ${response.status}: Failed to fetch location.`,
+      );
+    }
 
-## Submitting your solution
+    const data = await response.json();
+    // console.log("Geocoding API response:", data); // Debugging log
 
-Submit your solution on the platform for the rest of the community to see. Follow our ["Complete guide to submitting solutions"](https://www.frontendmentor.io/guides/how-to-submit-solutions) for tips on how to do this.
+    // Catch empty search results
+    if (!data.results || data.results.length === 0) {
+      throw new Error(`No locations found matching "${query}".`);
+    }
 
-Remember, if you're looking for feedback on your solution, be sure to ask questions when submitting it. The more specific and detailed you are with your questions, the higher the chance you'll get valuable feedback from the community.
+    const { country, name, longitude, latitude } = data.results[0];
+    return { country, name, longitude, latitude };
+  } catch (error) {
+    console.log(error.stack);
+    throw error;
+  }
+}
+```
 
-**We strongly recommend overwriting this `README.md` with a custom one.** We've provided a template inside the [`README-template.md`](./README-template.md) file in this starter code. The template provides a guide for what to add. A custom `README` will help you explain your project and reflect on your learnings.
+#### 4. Targeted DOM Manipulation
 
-## Sharing your solution
+To keep the page responsive and performant, I minimized full-tree reflows by updating specific DOM nodes (`textContent`, `setAttribute`, and targeted class toggles) instead of continually wiping the markup with heavy `innerHTML` injections.
 
-There are multiple places you can share your solution:
+---
 
-1. Submit it on the platform and share your solution page in the **#finished-projects** channel of our [community](https://www.frontendmentor.io/community)
-2. Share on [X (formerly Twitter)](https://x.com/frontendmentor) and mention **@frontendmentor**, including the repo and live URLs in your post. We'd love to take a look at what you've built and help share it around.
-3. Share your solution on [LinkedIn](https://www.linkedin.com/company/frontend-mentor/).
-4. Blog about your experience building your project. Writing about your workflow, technical choices, and talking through your code is a brilliant way to reinforce what you've learned. Great platforms to write on are [dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), and [CodeNewbie](https://community.codenewbie.org/).
+### Continued Development
 
-## Got feedback for us?
+Features planned for upcoming updates:
 
-We love receiving feedback! We're always looking to improve our challenges and our platform. So if you have anything you'd like to mention, please email hi[at]frontendmentor[dot]io.
+- **Location Autocomplete:** Provide real-time location suggestions as the user types into the search field.
+- **Unit Switching (°C / °F):** Include a stateful toggle to convert metric and imperial measurements on the fly.
+- **Browser Geolocation:** Add a "Use My Current Location" button leveraging the browser's native `navigator.geolocation` API.
+- **Persistent State with `localStorage`:** Save the user's most recent search or favorite cities so data persists between browser refreshes.
 
-**This challenge is completely free. Please share it with anyone who will find it useful for practice.**
+---
 
-**Have fun building!** 🚀
+### Useful Resources
+
+- [MDN Web Docs - Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) - Guided my understanding of request lifecycles and response parsing.
+- [A Complete Guide to CSS Grid (CSS-Tricks)](https://css-tricks.com/snippets/css/complete-guide-grid/) - The definitive visual reference for creating auto-responsive grid layouts.
+- [JavaScript.info - Async/Await](https://javascript.info/async-await) - Clear, concise walkthrough of modern asynchronous JavaScript control flow.
+
+---
+
+## Author
+
+- GitHub - [@atul-kumar6](https://github.com/atul-kumar06)
+- LinkedIn - [Atul Kumar](https://www.linkedin.com/in/atul-kumar-089570236/)
+
+---
+
+## Acknowledgments
+
+A big thank you to the [Frontend Mentor](https://www.frontendmentor.io) team for providing professional design specs and challenges that bridge the gap between classroom theory and production-grade front-end development.
