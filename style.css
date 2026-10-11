@@ -11,6 +11,16 @@
   --blue-700: hsl(248, 70%, 36%);
   --border-radius-sm: 8px;
   --blue-500: hsl(233, 67%, 56%);
+  --bg-card: #20223b;
+  --bg-card-subtle: #292b49;
+  --text-muted: #8e94a8;
+  --skeleton-base: #282a47;
+  --skeleton-highlight: #35385d;
+  --bg-card: #20223b;
+  --bg-card-subtle: #292b49;
+  --text-muted: #8e94a8;
+  --skeleton-base: #282a47;
+  --skeleton-highlight: #35385d;
 }
 
 *,
@@ -215,6 +225,7 @@ body {
   width: 100%;
   max-width: 550px;
   margin: auto; /* Keeps it centered */
+  margin-bottom: 20px;
 }
 .search-box {
   display: flex;
@@ -442,7 +453,7 @@ body {
 }
 
 #hourly-container {
-  height: 400px;
+  height: 530px;
   overflow-y: auto;
 }
 
@@ -589,5 +600,250 @@ body {
   .error-container {
     gap: 1rem;
     margin-top: 1rem;
+  }
+}
+
+/* ============================================================
+   Skeleton Dashboard Layout & Theme Matching the Design
+   ============================================================ */
+
+/* Base Dashboard Grid */
+.weather-dashboard {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.left-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Skeleton Base Card Styling */
+.skeleton-card {
+  background-color: var(--bg-card);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+/* 1. Hero Card Skeleton */
+.skeleton-hero {
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skeleton-loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 3 Bouncing Dots Animation */
+.bouncing-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.bouncing-dots span {
+  width: 9px;
+  height: 9px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+  animation: bounceDot 1.4s infinite ease-in-out both;
+}
+
+.bouncing-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.bouncing-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+.bouncing-dots span:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes bounceDot {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.6);
+    opacity: 0.35;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.skeleton-loading-text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+/* 2. Metric Grid Skeleton */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 96px;
+  background-color: var(--bg-card);
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+
+.metric-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.metric-placeholder {
+  font-size: 1.4rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* 3. Daily Forecast Skeleton (7 Cards) */
+.section-title {
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.skeleton-daily-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+}
+
+.skeleton-day-card {
+  height: 140px;
+  border-radius: 14px;
+}
+
+/* 4. Hourly Forecast Skeleton (Right Dashboard) */
+.skeleton-hourly-dashboard {
+  background-color: var(--bg-card);
+  border-radius: 16px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hourly-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.skeleton-dropdown-pill {
+  background-color: var(--bg-card-subtle);
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.skeleton-hourly-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-hourly-item {
+  height: 52px;
+  border-radius: 10px;
+  width: 100%;
+}
+
+/* ============================================================
+   Shimmer Animation Effect
+   ============================================================ */
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base) 0%,
+    var(--skeleton-highlight) 50%,
+    var(--skeleton-base) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Utility to toggle between skeleton and live data */
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   Responsive Media Queries
+   ============================================================ */
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .weather-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .skeleton-daily-grid {
+    overflow-x: auto;
+    padding-bottom: 8px;
+    grid-template-columns: repeat(7, minmax(90px, 1fr));
+  }
+}
+
+/* Mobile (max-width: 640px) */
+@media (max-width: 640px) {
+  .metric-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .skeleton-hero {
+    min-height: 200px;
+  }
+
+  .skeleton-daily-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    scrollbar-width: thin;
+  }
+
+  .skeleton-day-card {
+    min-width: 80px;
+    height: 125px;
+    flex-shrink: 0;
   }
 }

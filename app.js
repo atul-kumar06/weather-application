@@ -25,12 +25,27 @@ const perceptionUnit = document.querySelector(".precipitation-unit");
 const windUnit = document.querySelector(".wind-unit");
 const humadityUnit = document.querySelector(".humadity-unit");
 const weatherDashboard = document.querySelector("main");
+const skeletonDashboard = document.getElementById("skeleton-dashboard");
+const weatherDashboardSkeleton = document.querySelector(
+  ".weather-dashboard:not(#skeleton-dashboard)",
+);
+
+function showSkeleton() {
+  skeletonDashboard.classList.remove("hidden");
+  weatherDashboardSkeleton.classList.add("hidden");
+}
+
+function hideSkeleton() {
+  skeletonDashboard.classList.add("hidden");
+  weatherDashboardSkeleton.classList.remove("hidden");
+}
 
 // Fetch weatherInfo from API
 async function weatherInfo({
   unitSystem = "metric",
   userEnteredPlace = "New Delhi",
 } = {}) {
+  showSkeleton();
   try {
     const latlogFetch = await getGeoCoordinates(userEnteredPlace);
 
@@ -167,6 +182,8 @@ async function weatherInfo({
   } catch (error) {
     renderErrorUI(error.message);
     console.log("Error inside the weatherInfo fucnction\n", error.stack);
+  } finally {
+    hideSkeleton();
   }
 }
 

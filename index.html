@@ -384,6 +384,80 @@
           </div>
         </div>
       </section>
+      <!-- Skeleton Loading State (Shown while fetching) -->
+      <section
+        id="skeleton-dashboard"
+        class="weather-dashboard"
+        aria-busy="true"
+        aria-label="Loading weather data"
+      >
+        <!-- Left Column -->
+        <div class="left-dashboard">
+          <!-- Hero Skeleton Card with Bouncing Dots -->
+          <div class="skeleton-card skeleton-hero">
+            <div class="skeleton-loader-content">
+              <div class="bouncing-dots" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <p class="skeleton-loading-text">Loading...</p>
+            </div>
+          </div>
+
+          <!-- 4 Metric Cards Placeholder -->
+          <div class="metric-grid">
+            <div class="skeleton-card metric-card">
+              <span class="metric-label">Feels Like</span>
+              <span class="metric-placeholder">&mdash;</span>
+            </div>
+            <div class="skeleton-card metric-card">
+              <span class="metric-label">Humidity</span>
+              <span class="metric-placeholder">&mdash;</span>
+            </div>
+            <div class="skeleton-card metric-card">
+              <span class="metric-label">Wind</span>
+              <span class="metric-placeholder">&mdash;</span>
+            </div>
+            <div class="skeleton-card metric-card">
+              <span class="metric-label">Precipitation</span>
+              <span class="metric-placeholder">&mdash;</span>
+            </div>
+          </div>
+
+          <!-- 7-Day Forecast Placeholder -->
+          <div class="daily-forecast">
+            <h3 class="section-title">Daily forecast</h3>
+            <div class="daily-grid skeleton-daily-grid">
+              <div class="skeleton-day-card skeleton-shimmer"></div>
+              <div class="skeleton-day-card skeleton-shimmer"></div>
+              <div class="skeleton-day-card skeleton-shimmer"></div>
+              <div class="skeleton-day-card skeleton-shimmer"></div>
+              <div class="skeleton-day-card skeleton-shimmer"></div>
+              <div class="skeleton-day-card skeleton-shimmer"></div>
+              <div class="skeleton-day-card skeleton-shimmer"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column (Hourly Forecast Placeholder) -->
+        <div class="right-dashboard skeleton-hourly-dashboard">
+          <div class="hourly-header">
+            <h3 class="section-title">Hourly forecast</h3>
+            <div class="skeleton-dropdown-pill">&mdash; &#9662;</div>
+          </div>
+          <div class="hourly-list skeleton-hourly-list">
+            <div class="skeleton-hourly-item skeleton-shimmer"></div>
+            <div class="skeleton-hourly-item skeleton-shimmer"></div>
+            <div class="skeleton-hourly-item skeleton-shimmer"></div>
+            <div class="skeleton-hourly-item skeleton-shimmer"></div>
+            <div class="skeleton-hourly-item skeleton-shimmer"></div>
+            <div class="skeleton-hourly-item skeleton-shimmer"></div>
+            <div class="skeleton-hourly-item skeleton-shimmer"></div>
+            <div class="skeleton-hourly-item skeleton-shimmer"></div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <script src="app.js" type="module"></script>
