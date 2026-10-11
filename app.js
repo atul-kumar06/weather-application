@@ -102,7 +102,7 @@ async function weatherInfo({
     });
 
     // Hourley Forecast
-
+    hourleySelectDay.innerHTML = "";
     const totalNumberOfDays = dailyForecastData.time;
     totalNumberOfDays.forEach((value, index) => {
       let setOptionDay = new Date(
